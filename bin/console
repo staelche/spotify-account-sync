@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Staelche\SpotifyAccountSync\Command\SpotifyDeleteTrackLibraryCommand;
+use Staelche\SpotifyAccountSync\Command\SpotifyGetRefreshTokenCommand;
+use Staelche\SpotifyAccountSync\Command\SpotifySyncArtistsFromAlbumsCommand;
+use Staelche\SpotifyAccountSync\Command\SpotifySyncAlbumsCommand;
+use Staelche\SpotifyAccountSync\Command\SpotifySyncPlaylistsCommand;
+use Staelche\SpotifyAccountSync\Command\SpotifySyncShowsCommand;
+use Staelche\SpotifyAccountSync\Command\SpotifyInitializeCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+
+try {
+
+    // load config
+    $configFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
+
+    if (is_file($configFile) === false) {
+        throw new Exception('Can\'t read config file');
+    }
+
+    require_once $configFile;
+
+    // create container
+    $configParameters = new ParameterBag($config);
+    $containerBuilder = new ContainerBuilder($configParameters);
+
+    $servicesFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'services.php';
+
+    if (is_file($servicesFile) === false) {
+        throw new Exception('Can\'t read services file');
+    }
+
+    require_once $servicesFile;
+
+    // create console application and run it
+    $application = new Application('Spotify Two-Way Account Sync', 'v0.1');
+
+    $application->add(new SpotifySyncAlbumsCommand(null, $containerBuilder->get('Spotify')));
+    $application->add(new SpotifySyncPlaylistsCommand(null, $containerBuilder->get('Spotify')));
+    $application->add(new SpotifySyncShowsCommand(null, $containerBuilder->get('Spotify')));
+    $application->add(new SpotifyGetRefreshTokenCommand(null, $containerBuilder->get('Spotify')));
+    $application->add(new SpotifySyncArtistsFromAlbumsCommand(null, $containerBuilder->get('Spotify')));
+
+    $application->run();
+
+} catch (Throwable $e) {
+    echo $e->getMessage() . "\n\n";
+    debug_print_backtrace();
+    exit(1);
+}

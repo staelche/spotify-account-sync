@@ -1,0 +1,14 @@
+<?php
+
+// spotify
+$config['spotify']['account']['left']['token'] = '';
+$config['spotify']['account']['right']['token'] = '';
+$config['spotify']['api']['clientId'] = '';
+$config['spotify']['api']['clientSecret'] = '';
+$config['spotify']['api']['redirectionUrl'] = '';
+
+// persistence
+$config['persistence']['path'] = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'spotify-account-sync.sqlite';
+$config['persistence']['user'] = '';
+$config['persistence']['password'] = '';
+$config['persistence']['driver'] = 'pdo_sqlite';

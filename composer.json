@@ -1,0 +1,23 @@
+{
+    "name": "staelche/spotify-account-sync",
+    "description": "Syncs playlists, artists, albums and songs between spotify accounts",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Thomas Stähle",
+            "email": "staelche@buxs.org"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Staelche\\SpotifyAccountSync\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "jwilsson/spotify-web-api-php": "^4",
+        "symfony/console": "^5",
+        "symfony/dependency-injection": "^5.2",
+        "myclabs/php-enum": "^1.7"
+    }
+}

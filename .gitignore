@@ -1,0 +1,4 @@
+data/spotify-account-sync.sqlite
+.idea/
+vendor/
+config/config.php
